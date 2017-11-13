@@ -67,7 +67,7 @@ class CreateCase:
         all_case_info=UseCaseOperation.query_test_case_info(type=0)
         #logging.info(all_case_info)
         class_enu=set()
-        for key,value in all_case_info.items():
+        for key,value in all_case_info.items():##[lesq]
             if value.get('class_name'):
                 class_enu.add(value.get('class_name'))
 
@@ -110,7 +110,7 @@ class CreateCase:
                     payload=case_info.get('body')
 
                     file.write(headers.format(case_info.get('func_name'), case_info.get('func_name')))
-                    file.write(content.format('test_' + case_info.get('func_name'), case_info.get('func_name'),case_info.get('caseDescription'),payload.replace(chr(34),"'"),case_info.get('uri'),case_info.get('kwassert')))
+                    file.write(content.format('test_' + case_info.get('func_name'), case_info.get('func_name'),case_info.get('caseDescription'),payload.replace(chr(34),"'"),case_info.get('uri'),case_info.get('kwassert'),case_info.get('ifexecute')))
             else: #多接口用例
                 with open(
                     config.CREATE_CASE_PATH + 'test_' + class_name.lower() + '.py', 'a',
@@ -122,7 +122,7 @@ class CreateCase:
                         payload = item.get('body')
                         file.write(content.format('test_' + item.get('func_name'), item.get('func_name'),
                                                   item.get('caseDescription'), payload.replace(chr(34),"'"),
-                                                  item.get('uri'),item.get('kwassert')))
+                                                  item.get('uri'),item.get('kwassert'),item.get('ifexecute')))
                         # logging.info(headers.format(key,key))
                 #case_name = [value.get('func_name') for key, value in case_info.items()]
                 #result.update({class_name: case_name})

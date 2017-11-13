@@ -42,6 +42,7 @@ class QueryCaseInfo(BaseSqlite):
                 result['kwassert'] = query[0].kwassert
                 result['caseId'] = query[0].caseId
                 result['caseDescription'] = query[0].caseDescription
+                result['ifexectue'] = query[0].ifexecute
                 return result
             return dict(err=CASE_IS_NOT_DEFINE)
         return update_wrapper(wrapper, function)

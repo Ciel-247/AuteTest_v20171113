@@ -19,7 +19,7 @@ class UseCaseOperation:
 
     @classmethod
     @util.AddCaseWrapper("test_case")
-    def add_test_case(cls, caseId=None, class_name=None, func_name=None,caseDescription=None,uri=None, body=None,kwassert=None):
+    def add_test_case(cls, caseId=None, class_name=None, func_name=None,caseDescription=None,uri=None, body=None,kwassert=None, ifexecute=None):
         """根据表字段增加 test constructor"""
 
     @classmethod

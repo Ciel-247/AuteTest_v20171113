@@ -4510,3 +4510,7 @@ AssertionError: '≤È—Ø≥…π¶' not found in "{'result': None, 'error_code': 10012, '
 [2017-11-13 09:31:58,542-root(INFO)run.py:47 ] BSTestRunner report
 [2017-11-13 09:50:22,811-root(INFO)run.py:38 ] 1510537822.8112302
 [2017-11-13 09:50:22,860-root(INFO)run.py:47 ] BSTestRunner report
+[2017-11-13 14:10:28,092-root(INFO)run.py:38 ] 1510553428.092801
+[2017-11-13 14:10:28,127-root(INFO)run.py:47 ] BSTestRunner report
+[2017-11-13 14:17:36,176-root(INFO)run.py:38 ] 1510553856.1762862
+[2017-11-13 14:17:36,230-root(INFO)run.py:47 ] BSTestRunner report

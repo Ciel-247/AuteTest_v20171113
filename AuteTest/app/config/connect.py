@@ -30,10 +30,11 @@ class TestCase(Base):
     func_name = Column(String)
     body = Column(String)
     kwassert = Column(String)
+    ifexecute = Column(String)
     type = Column(String, default=0)
     caseDescription = Column(String)
 
-    def __init__(self,caseId,caseDescription, uri, class_name, func_name, body, kwassert):
+    def __init__(self,caseId,caseDescription, uri, class_name, func_name, body, kwassert, ifexecute):
         """ pass """
         self.caseId = caseId
         self.caseDescription = caseDescription
@@ -42,6 +43,7 @@ class TestCase(Base):
         self.func_name = func_name
         self.body = body
         self.kwassert = kwassert
+        self.ifexecute = ifexecute
 
     def __repr__(self):
         """ 调用类返回的结构 """
