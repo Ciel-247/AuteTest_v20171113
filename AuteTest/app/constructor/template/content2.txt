@@ -1,0 +1,14 @@
+    # {0}:%(func_name)s -- {1}:%(func_name)s  -- {2}:%(caseDescription)s -- {3}:%(body)s --{4}:%(uri)s --{5}:%(kwassert)s
+    def {0}(self, **kwargs):
+        """ {1} """
+        response, kwassert = kwargs.get('response'), kwargs.get('kwassert')
+
+        ''' {2} '''
+        payload = "{3}"
+        req_url = "{4}"
+        kwassertStr="{5}"
+        r = requests.post(req_url, data=payload.replace("'",'"'))
+        self.result = r.json()
+        #logging.info(self.result)
+        self.assertIn(kwassertStr, self.result)
+

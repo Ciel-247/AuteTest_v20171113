@@ -1,0 +1,18 @@
+
+    @test_case_runner
+    @test_case_parse
+    def {}(self, **kwargs):
+        """ {} 接口测试case """
+        response, kwassert = kwargs.get('response'), kwargs.get('kwassert')
+        #logging.info(kwargs.get('response'))
+        #logging.info(kwargs.get('exec_text'))
+        #logging.info(kwargs.get('kwassert'))
+        if kwargs.get('exec_text'):
+            for item in kwargs.get('exec_text'):
+                #logging.info(type(item))
+                exec(item)
+        else:
+            #assert_key, assert_value = kwassert.split('=')
+            #logging.info(assert_value)
+            #self.assertEqual(response.get(assert_key), assert_value)
+            self.assertIn(str(kwassert),str(response))

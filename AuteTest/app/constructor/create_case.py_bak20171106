@@ -1,0 +1,135 @@
+# -*- coding: utf-8 -*-
+"""
+@ Version : 0.1
+@ Author  : xuezl
+@ File    : create_case.py
+@ Project : base_test
+@ Create Time: 2017-05-25 17:26
+"""
+from os import listdir ,remove
+from ..config import config
+from ..config import message
+from .use_case_operation import UseCaseOperation
+import openpyxl
+import logging
+
+class FileMeta:
+    """read file headers and content.txt"""
+    old_cases = listdir(config.CREATE_CASE_PATH)
+    #先将旧的用例文件删除
+    [remove(config.CREATE_CASE_PATH + item) for item in old_cases if item not in [
+        '__init__.py', '__pycache__']]
+    headers = open(config.CASE_HEADER_PATH, 'rb')
+    content = open(config.CASE_CONTENT_PATH, 'rb')
+
+    @classmethod
+    def __close__(cls):
+        """ close all files """
+        cls.headers.close()
+        cls.content.close()
+
+class CreateCase:
+    """自动化测试用例生成"""
+    @classmethod
+    def getCaseListfromExcel(cls):
+        """从test-case.xlsx中读取所有用例"""
+
+
+
+    @classmethod
+    def import_files_case_to_sqlite(cls):
+        """将case_file文件中的全部数据导入sqlite,防备后面组件调用测试用例的元素"""
+        work_book = openpyxl.load_workbook("case_file/test-case.xlsx") #读取工作簿，此处工作簿名称写死，可以改成可配置或读取批量的；
+        ws = work_book.get_sheet_by_name("interfaces-test") #读取工作表,此处工作表名称写死，可以改成遍历；
+
+        #第一行为表头，不读取，从第二行开始，遍历每行
+        for rx in ws.iter_rows(min_row=2):
+            params_dict = dict(
+                caseId=rx[0].value,
+                class_name=rx[1].value,
+                func_name=rx[2].value,
+                caseDescription=rx[3].value,
+                uri=rx[4].value,
+                body=rx[5].value,
+                kwassert=rx[6].value
+            )
+            query_info = UseCaseOperation.query_test_case_info(
+                uri=params_dict.get('uri'),
+                func_name=params_dict.get('func_name'),
+                type=0
+            )
+            #logging.info(query_info)
+
+            if query_info.get('uri') == params_dict.get('uri') and query_info.get('func_name') ==params_dict.get('func_name'):
+                return message.CASE_ALREADY_EXISTS
+            UseCaseOperation.add_test_case(**params_dict)
+
+    @classmethod
+    def get_case_class_name(cls):
+        """获取所有class case name"""
+        cls.import_files_case_to_sqlite()
+        all_case_info=UseCaseOperation.query_test_case_info(type=0)
+        #logging.info(all_case_info)
+        class_enu=set()
+        for key,value in all_case_info.items():
+            if value.get('class_name'):
+                class_enu.add(value.get('class_name'))
+
+        return class_enu
+
+    @classmethod
+    def get_case_function_name(cls):
+        """获取同一模块（class）下的所有function name"""
+        result= {}
+        #logging.info(cls.get_case_class_name())
+        for index,class_name in enumerate(cls.get_case_class_name()):
+            case_info=UseCaseOperation.query_test_case_info(class_name=class_name, type=0)
+            logging.info(case_info)
+
+            if not isinstance(list(case_info.keys())[0], int):
+                logging.info(result)
+                result.update({class_name: case_info.get('func_name')})
+                #result.update({"body": case_info.get('body')})
+                #result.update({"func_name": case_info.get('func_name')})
+                #result.update({"uri": case_info.get('uri')})
+                #result.update({"uri": case_info.get('uri')})
+                logging.info(result)
+            else:
+                case_name = [value.get('func_name') for key, value in case_info.items()]
+                result.update({class_name: case_name})
+        #logging.info(result)
+        return result
+
+
+    @classmethod
+    def create_unittest_files(cls):
+        """通过 get_case_function_name 函数传递回来的 class_name 和 func_name 批量生成测试文件用例"""
+        headers = FileMeta.headers.read().decode()
+        content = FileMeta.content.read().decode()
+        #logging.info(cls.get_case_function_name())
+
+        for key,value in cls.get_case_function_name().items():
+            logging.info(cls.get_case_function_name().items())
+            if not isinstance(value,list): #模块单用例
+                with open(
+                    config.CREATE_CASE_PATH + 'test_'+ key.lower()+'.py','a',encoding='utf-8'
+                )as file:
+                    file.write(headers.format(key, key))
+                    file.write(content.format('test_' + value, value))
+                    #logging.info(content.format('test_' + value, value))
+            else: #模块多用用例
+                with open(
+                    config.CREATE_CASE_PATH + 'test_'+ key.lower()+'.py','a',encoding='utf-8'
+                )as file:
+                    file.write(headers.format(key, key))
+                    for item in value:
+                        file.write(content.format('test_' + item, item))
+                    #logging.info(headers.format(key,key))
+
+        #logger2.error("OK,header")
+        #logging.info("case headers\r\n"+headers)
+
+        #FileMeta.__close__()
+        return dict(msg=message.CASE_CREATE_OVER,final_case_path=config.CREATE_CASE_PATH)
+
+

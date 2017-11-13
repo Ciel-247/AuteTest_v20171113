@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+
+""" 测试工具自动生成的case """
+
+import unittest
+import requests
+import os, sys
+from app.controller.util.active import test_case_runner, test_case_parse
+import logging
+
+class {0}(unittest.TestCase):
+    """{1}"""
+
+    def setUp(self):
+        """ test setup function """
+
+
+    def tearDown(self):
+        """ test case tearDown function """
+
