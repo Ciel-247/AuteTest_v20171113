@@ -47,7 +47,8 @@ class CreateCase:
                 caseDescription=rx[3].value,
                 uri=rx[4].value,
                 body=rx[5].value,
-                kwassert=rx[6].value
+                kwassert=rx[6].value,
+
             )
             query_info = UseCaseOperation.query_test_case_info(##[lesq??]这里的目的是想要供后续判断这条用例是否已经存在？但是query_test_case_info方法还没有完善？
                 uri=params_dict.get('uri'),
