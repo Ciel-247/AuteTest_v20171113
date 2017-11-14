@@ -17,6 +17,7 @@ class sscx(unittest.TestCase):
 
     @test_case_runner
     @test_case_parse
+    @unittest.skipIf('N' != 'Y',"是否执行用例未選擇Y则跳过该条用例")
     def test_sscx(self, **kwargs):
         """ sscx 接口测试case """
         response, kwassert = kwargs.get('response'), kwargs.get('kwassert')

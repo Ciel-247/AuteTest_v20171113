@@ -17,6 +17,7 @@ class 实时热点采集(unittest.TestCase):
 
     @test_case_runner
     @test_case_parse
+    @unittest.skipIf('Y' != 'Y',"是否执行用例未選擇Y则跳过该条用例")
     def test_GET请求1(self, **kwargs):
         """ GET请求1 接口测试case """
         response, kwassert = kwargs.get('response'), kwargs.get('kwassert')
@@ -35,6 +36,7 @@ class 实时热点采集(unittest.TestCase):
 
     @test_case_runner
     @test_case_parse
+    @unittest.skipIf('N' != 'Y',"是否执行用例未選擇Y则跳过该条用例")
     def test_GET请求2(self, **kwargs):
         """ GET请求2 接口测试case """
         response, kwassert = kwargs.get('response'), kwargs.get('kwassert')
@@ -53,6 +55,7 @@ class 实时热点采集(unittest.TestCase):
 
     @test_case_runner
     @test_case_parse
+    @unittest.skipIf('Y' != 'Y',"是否执行用例未選擇Y则跳过该条用例")
     def test_POST请求1(self, **kwargs):
         """ POST请求1 接口测试case """
         response, kwassert = kwargs.get('response'), kwargs.get('kwassert')
@@ -71,6 +74,7 @@ class 实时热点采集(unittest.TestCase):
 
     @test_case_runner
     @test_case_parse
+    @unittest.skipIf('Y' != 'Y',"是否执行用例未選擇Y则跳过该条用例")
     def test_POST请求2(self, **kwargs):
         """ POST请求2 接口测试case """
         response, kwassert = kwargs.get('response'), kwargs.get('kwassert')

@@ -1,4 +1,5 @@
-    # {0}:%(func_name)s -- {1}:%(func_name)s  -- {2}:%(caseDescription)s -- {3}:%(body)s --{4}:%(uri)s --{5}:%(kwassert)s
+    # {0}:%(func_name)s -- {1}:%(func_name)s  -- {2}:%(caseDescription)s -- {3}:%(body)s --{4}:%(uri)s --{5}:%(kwassert)s --{6}:%(ifexecute)s
+    @unittest.skipIf({6} != 'Y',"是否执行用例未選擇Y")
     def {0}(self, **kwargs):
         """ {1} """
         response, kwassert = kwargs.get('response'), kwargs.get('kwassert')
