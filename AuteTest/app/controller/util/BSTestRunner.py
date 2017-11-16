@@ -633,12 +633,12 @@ class BSTestRunner(Template_mixin):
     def sortResult(self, result_list):
         # unittest does not seems to run in any particular order.
         # Here at least we want to group them together by class.
-        rmap = {}
-        classes = []
-        for n,t,o,e in result_list:
+        rmap = {}##[lesq]作用是什么？
+        classes = []##[lesq]作用是什么？
+        for n,t,o,e in result_list:#[lesq]n,t,o,e分别代表什么？
             cls = t.__class__
-            if not cls in rmap:
-                rmap[cls] = []
+            if not cls in rmap:##[lesq]如果当前的t.__class__不在rmap中
+                rmap[cls] = []##[lesq]把rmap[t.__class__]=[]
                 classes.append(cls)
             rmap[cls].append((n,t,o,e))
         r = [(cls, rmap[cls]) for cls in classes]
@@ -809,7 +809,7 @@ class TestProgram(unittest.TestProgram):
     A variation of the unittest.TestProgram. Please refer to the base
     class for command line parameters.
     """
-    def runTests(self):
+    def runTests(self):##[lesq]继承了unittest.TestProgram，重载了runTest()方法，另testRunner = BSTestRunner(verbosity=self.verbosity)，然后继续运行unittest.TestProgram.runTests(self)
         # Pick BSTestRunner as the default test runner.
         # base class's testRunner parameter is not useful because it means
         # we have to instantiate BSTestRunner before we know self.verbosity.
