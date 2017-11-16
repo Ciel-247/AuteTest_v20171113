@@ -635,13 +635,13 @@ class BSTestRunner(Template_mixin):
         # Here at least we want to group them together by class.
         rmap = {}##[lesq]作用是什么？
         classes = []##[lesq]作用是什么？
-        for n,t,o,e in result_list:#[lesq]n,t,o,e分别代表什么？
+        for n,t,o,e in result_list:#[lesq]n,t,o,e分别代表什么？【n是resultCode，0成功1失败2错误；t是testCase Object；o是Test output；e是stack trace，堆栈轨迹】在_TestResult类中定义
             cls = t.__class__
             if not cls in rmap:##[lesq]如果当前的t.__class__不在rmap中
                 rmap[cls] = []##[lesq]把rmap[t.__class__]=[]
-                classes.append(cls)
-            rmap[cls].append((n,t,o,e))
-        r = [(cls, rmap[cls]) for cls in classes]
+                classes.append(cls)##[lesq]classes把当前的t.__class__加进去
+            rmap[cls].append((n,t,o,e))##[lesq]rmap[t.__class__]增加(n,t,o,e)
+        r = [(cls, rmap[cls]) for cls in classes]##[lesq]把result_list里面的cls和rmap组成list放入r用于返回
         return r
 
 
@@ -653,13 +653,13 @@ class BSTestRunner(Template_mixin):
         startTime = str(self.startTime)[:19]
         duration = str(self.stopTime - self.startTime)
         status = []
-        if result.success_count: status.append('<span class="text text-success">Pass <strong>%s</strong></span>'    % result.success_count)
+        if result.success_count: status.append('<span class="text text-success">Pass <strong>%s</strong></span>'    % result.success_count)##[lesq]如果成功数不为0，则status的list增加对应的span，其中strong的节点值为成功的数目
         if result.failure_count: status.append('<span class="text text-danger">Failure <strong>%s</strong></span>' % result.failure_count)
         if result.error_count:   status.append('<span class="text text-warning">Error <strong>%s</strong></span>'   % result.error_count  )
         if status:
-            status = ' '.join(status)
+            status = ' '.join(status)##[lesq]如果列表不为空，则把status转为字符串
         else:
-            status = 'none'
+            status = 'none'##[lesq]如果列表为空，则把status转为"none"
         return [
             ('Start Time', startTime),
             ('Duration', duration),
@@ -667,15 +667,15 @@ class BSTestRunner(Template_mixin):
         ]
 
 
-    def generateReport(self, test, result):
+    def generateReport(self, test, result):##[lesq]大体作用是把前面一步步生成的HTML报告的各部分组合起来，生成一个完整的output并返回
         report_attrs = self.getReportAttributes(result)
         generator = 'BSTestRunner %s' % __version__
         stylesheet = self._generate_stylesheet()
         heading = self._generate_heading(report_attrs)
         report = self._generate_report(result)
         ending = self._generate_ending()
-        output = self.HTML_TMPL % dict(
-            title = saxutils.escape(self.title),
+        output = self.HTML_TMPL % dict(##[lesq]这里的%是怎么用的？
+            title = saxutils.escape(self.title),##[lesq]#xmlsax.saxutils.escape()函数，接受一个字符串，并返回一个带有html字符的字符串（"&"、"<"、">"分别以转义符"&"、"<"、"$gt;"的形式出现）
             generator = generator,
             stylesheet = stylesheet,
             heading = heading,
